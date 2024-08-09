@@ -61,13 +61,13 @@
         /*  */
         const sliderImage = document.getElementById('slider-image');
         const slider = document.getElementById('slider');
-        const imageBasePath = '/home/uepcb-0197/Documentos/GitHub/jmafp.github.io/SATELITE/'; // Update with your actual path
+        const imageBasePath = 'SATELITE/'; // Update with your actual path
 
         let imageFiles = []; // Will hold image file names
         let currentIndex = 0;
 
         function fetchImageList() {
-            fetch('/home/uepcb-0197/Documentos/GitHub/jmafp.github.io/image-list.json') // This should be a static JSON file or endpoint listing your images
+            fetch('image-list.json') // This should be a static JSON file or endpoint listing your images
                 .then(response => response.json())
                 .then(data => {
                     imageFiles = data;
