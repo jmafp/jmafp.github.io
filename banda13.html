@@ -62,12 +62,35 @@
         var img_id = "anim_img";
         var slider_id = "anim_frame_slider";
         var loop_select_id = "loop_select";
-        fts_img = 0;
-        lst_img = fTEMP.length;
-        for (var i = fts_img; i < lst_img; i++) {
-            /*frames[i] = "https://dl.dropboxusercontent.com/s/" + fTEMP[i];*/
-            frames[i] = "file:///home/uepcb-0197/SATELITE/SATELITE_09-08-2024_15_40.png";
+        
+        var imageFolderPath = "/home/uepcb-0197/SATELITE/"; // Update with your image folder path
+        var imageExtensions = ".png"; // Update with your image extension if needed
+
+        // List of images in the folder
+        var imageFiles = [
+            "SATELITE_09-08-2024_15_20.png",
+            "SATELITE_09-08-2024_15_30.png",
+            "SATELITE_09-08-2024_15_40.png"
+            // Add other image filenames here
+        ];
+
+        var frames = imageFiles.map(file => imageFolderPath + file);
+        var imgElement = document.getElementById(img_id);
+        var sliderElement = document.getElementById(slider_id);
+
+        sliderElement.max = frames.length - 1;
+
+        function updateImage(index) {
+            imgElement.src = frames[index];
         }
+
+        sliderElement.addEventListener('input', function () {
+            updateImage(this.value);
+        });
+
+        // Initialize with the first image
+        updateImage(0);
+        
         anim = new Animation(frames, img_id, slider_id, loop_select_id);
     </script>
 
