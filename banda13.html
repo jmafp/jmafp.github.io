@@ -70,7 +70,7 @@
         fetch(serverUrl)
             .then(response => response.json())
             .then(imageFiles => {
-                var imageFolderPath = 'http://localhost:8000/SATELITE/'; // Update with your server URL if needed
+                var imageFolderPath = 'http://localhost:8000/'; // Update with your server URL if needed
 
                 // Construct full URLs for images
                 var frames = imageFiles.map(file => imageFolderPath + file);
