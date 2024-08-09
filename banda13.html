@@ -59,45 +59,37 @@
 
     <script language="javascript">
         /*  */
-        const img_id = "anim_img";
-        const slider_id = "anim_frame_slider";
-        const serverUrl = 'http://localhost:8000/images'; // URL to your images listing endpoint
-        const imageFolderPath = 'http://localhost:8000/SATELITE/'; // URL path to the images
+        const sliderImage = document.getElementById('slider-image');
+        const slider = document.getElementById('slider');
+        const imageBasePath = '/home/uepcb-0197/SATELITE/'; // Update with your actual path
 
-        const imgElement = document.getElementById(img_id);
-        const sliderElement = document.getElementById(slider_id);
+        let imageFiles = []; // Will hold image file names
+        let currentIndex = 0;
 
-        // Fetch the list of images from the server
-        fetch(serverUrl)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(imageFiles => {
-                if (!Array.isArray(imageFiles)) {
-                    throw new Error('Expected an array of image filenames');
-                }
+        function fetchImageList() {
+            fetch('/home/uepcb-0197/image-list.json') // This should be a static JSON file or endpoint listing your images
+                .then(response => response.json())
+                .then(data => {
+                    imageFiles = data;
+                    slider.max = imageFiles.length - 1;
+                    updateImage(0);
+                })
+                .catch(error => console.error('Error fetching image list:', error));
+        }
 
-                // Construct full URLs for images
-                const frames = imageFiles.map(file => imageFolderPath + file);
+        function updateImage(index) {
+            if (imageFiles[index]) {
+                sliderImage.src = imageBasePath + imageFiles[index];
+                currentIndex = index;
+            }
+        }
 
-                // Set slider max value
-                sliderElement.max = frames.length - 1;
+        slider.addEventListener('input', () => {
+            updateImage(slider.value);
+        });
 
-                function updateImage(index) {
-                    imgElement.src = frames[index];
-                }
-
-                sliderElement.addEventListener('input', function () {
-                    updateImage(this.value);
-                });
-
-                // Initialize with the first image
-                updateImage(0);
-            })
-            .catch(error => console.error('Error fetching image list:', error));
+        // Fetch the image list on page load
+        fetchImageList();
     </script>
 
 </body>
