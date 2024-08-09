@@ -59,22 +59,31 @@
 
     <script language="javascript">
         /*  */
-        var img_id = "anim_img";
-        var slider_id = "anim_frame_slider";
-        var serverUrl = 'http://localhost:8000/images'; // Update with your server URL
+        const img_id = "anim_img";
+        const slider_id = "anim_frame_slider";
+        const serverUrl = 'http://localhost:8000/images'; // URL to your images listing endpoint
+        const imageFolderPath = 'http://localhost:8000/SATELITE/'; // URL path to the images
 
-        var imgElement = document.getElementById(img_id);
-        var sliderElement = document.getElementById(slider_id);
+        const imgElement = document.getElementById(img_id);
+        const sliderElement = document.getElementById(slider_id);
 
         // Fetch the list of images from the server
         fetch(serverUrl)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(imageFiles => {
-                var imageFolderPath = 'http://localhost:8000/'; // Update with your server URL if needed
+                if (!Array.isArray(imageFiles)) {
+                    throw new Error('Expected an array of image filenames');
+                }
 
                 // Construct full URLs for images
-                var frames = imageFiles.map(file => imageFolderPath + file);
-                
+                const frames = imageFiles.map(file => imageFolderPath + file);
+
+                // Set slider max value
                 sliderElement.max = frames.length - 1;
 
                 function updateImage(index) {
