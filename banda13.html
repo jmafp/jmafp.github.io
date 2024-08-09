@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>WRF-TEMP2m</title>
+    <title>GOES-16 BANDA 13 INFRARROJA</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -65,8 +65,8 @@
         fts_img = 0;
         lst_img = fTEMP.length;
         for (var i = fts_img; i < lst_img; i++) {
-            frames[i] = "https://dl.dropboxusercontent.com/s/" + fTEMP[i];
-            /*frames[i] = "file:///home/jbwrf/Dropbox/frames/" + folder + "/img_" + ("0" + (i + 0)).slice(-2) + ".png"; */
+            /*frames[i] = "https://dl.dropboxusercontent.com/s/" + fTEMP[i];*/
+            frames[i] = "file:///home/uepcb-0197/SATELITE/SATELITE_09-08-2024" + "*.png";
         }
         anim = new Animation(frames, img_id, slider_id, loop_select_id);
     </script>
