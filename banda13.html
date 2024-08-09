@@ -53,7 +53,6 @@
             </div>
             <div class="col-sm-9">
                 <img class="img-responsive" id="anim_img">
-                <input id="anim_frame_slider" type="range" min="0" max="0" value="0">
             </div>
         </div>
     </div>
@@ -91,7 +90,7 @@
 
         // Initialize with the first image
         updateImage(0);
-
+	anim = new Animation(frames, imgElement, sliderElement, loop_select_id);
     </script>
 
 </body>
