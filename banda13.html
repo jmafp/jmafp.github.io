@@ -43,8 +43,12 @@
                     <br>
                     <div class="">
                         <h4>Velocidad de la animación</h4>
-                        <button type="button" class="btn btn-primary btn-xs" onclick="anim.slower()"><span class="glyphicon glyphicon-minus-sign"></span></button>
-                        <button type="button" class="btn btn-primary btn-xs" onclick="anim.faster()"><span class="glyphicon glyphicon-plus-sign"></span></i></button>
+                        <button type="button" id="slower" class="btn btn-primary btn-xs">
+                        <span class="glyphicon glyphicon-minus-sign"></span>
+                    	 </button>
+                     	 <button type="button" id="faster" class="btn btn-primary btn-xs">
+                        <span class="glyphicon glyphicon-plus-sign"></span>
+                    	 </button>
                     </div>
                     <br>
                 </div>
@@ -56,11 +60,14 @@
     </div>
 
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
         const sliderImage = document.getElementById('slider-image');
         const slider = document.getElementById('slider');
         const imageBasePath = 'SATELITE/'; // Path to images folder
-
         let imageFiles = []; // Array to hold image filenames
+        let currentIndex = 0; // Current index in the imageFiles array
+        let intervalId = null; // To store interval ID for autoplay
+        let intervalSpeed = 1000; // Default speed (1 second)
 
         function fetchImageList() {
             fetch('image-list.json')
@@ -81,12 +88,14 @@
         function updateImage(index) {
             if (index >= 0 && index < imageFiles.length) {
                 sliderImage.src = imageBasePath + imageFiles[index];
+                slider.value = index;
+                currentIndex = index;
                 console.log('Updated image to:', sliderImage.src);
             } else {
                 console.error('Index out of bounds:', index);
             }
         }
-        
+
         function goToFirstFrame() {
             updateImage(0);
         }
@@ -111,13 +120,31 @@
             if (intervalId === null) {
                 intervalId = setInterval(() => {
                     goToNextFrame();
-                }, 1000); // Change image every 1 second
+                }, intervalSpeed);
             }
         }
 
         function pauseAnimation() {
             clearInterval(intervalId);
             intervalId = null;
+        }
+
+        function slower() {
+            if (intervalSpeed < 5000) { // Limit maximum speed
+                intervalSpeed += 500; // Increase interval speed (slower)
+                if (intervalId !== null) {
+                    playAnimation(); // Restart animation with new speed
+                }
+            }
+        }
+
+        function faster() {
+            if (intervalSpeed > 500) { // Limit minimum speed
+                intervalSpeed -= 500; // Decrease interval speed (faster)
+                if (intervalId !== null) {
+                    playAnimation(); // Restart animation with new speed
+                }
+            }
         }
 
         // Event listeners for buttons
@@ -127,13 +154,18 @@
         document.getElementById('pause').addEventListener('click', pauseAnimation);
         document.getElementById('next-frame').addEventListener('click', goToNextFrame);
         document.getElementById('last-frame').addEventListener('click', goToLastFrame);
+        document.getElementById('slower').addEventListener('click', slower);
+        document.getElementById('faster').addEventListener('click', faster);
 
+        // Event listener for slider
         slider.addEventListener('input', () => {
             updateImage(parseInt(slider.value, 10));
         });
 
         // Fetch the image list on page load
         fetchImageList();
+    });
+
     </script>
 </body>
 </html>
