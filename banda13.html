@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <title>GOES-16 BANDA 13 INFRARROJA</title>
     <meta charset="utf-8">
@@ -8,47 +7,15 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <!-- Edistado por Jorge Bravo-->
-    <!-- Esto de de JSAnimation Python se paso a la carpeta: js en el archivo JSAnim_py.js https://www.dropbox.com/sh/7dh1uucbepvht6z/AAAqByvoNrZUGKosAPsezXGxa?dl=0-->
     <script src="js/JSAnim_py.js"></script>
     <script src="js/anim_vars.js"></script>
-    <!-- Esto de de JSAnimation Python se paso a la carpeta: css en el archivo JSAnimation.css-->
-    <!--  -->
 </head>
-
 <body>
     <div class="container">
         <div class="row">
             <div class="col-sm-3">
                 <div class="container">
-                    <br>
-                    <h4>Desplazador de tiempo</h4>
-                    <input id="anim_frame_slider" type="range" style="width:220px" name="points" min="0" max="1" step="1" value="0" onchange="anim.set_frame(parseInt(this.value));"></input>
-                    <br>
-                    <h4>Tipo de animación</h4>
-                    <form action="#n" name="loop_select" class="anim_control">
-                        <label class="radio-inline"><input type="radio" name="state" value="once">Once</label>
-                        <label class="radio-inline"><input type="radio" name="state" value="loop" checked>Loop</label>
-                        <label class="radio-inline"><input type="radio" name="state" value="reflect">Reflect</label>
-                    </form>
-                    <br>
-                    <div class="">
-                        <h4>Controles de la animación</h4>
-                        <button type="button" class="btn btn-primary btn-xs" onclick="anim.first_frame()">       <span class="glyphicon glyphicon-fast-backward"></span></button>
-                        <button type="button" class="btn btn-primary btn-xs" onclick="anim.previous_frame()">    <span class="glyphicon glyphicon-step-backward"></span></button>
-                        <button type="button" class="btn btn-primary btn-xs" onclick="anim.reverse_animation()"> <span class="glyphicon glyphicon-triangle-left"></span></button>
-                        <button type="button" class="btn btn-primary btn-xs" onclick="anim.pause_animation()">   <span class="glyphicon glyphicon-pause"></span></button>
-                        <button type="button" class="btn btn-primary btn-xs" onclick="anim.play_animation()">    <span class="glyphicon glyphicon-triangle-right"></span></button>
-                        <button type="button" class="btn btn-primary btn-xs" onclick="anim.next_frame()">        <span class="glyphicon glyphicon-step-forward"></span></button>
-                        <button type="button" class="btn btn-primary btn-xs" onclick="anim.last_frame()">        <span class="glyphicon glyphicon-fast-forward"></span></button>
-                    </div>
-                    <br>
-                    <div class="">
-                        <h4>Velocidad de la animación</h4>
-                        <button type="button" class="btn btn-primary btn-xs" onclick="anim.slower()"><span class="glyphicon glyphicon-minus-sign"></span></button>
-                        <button type="button" class="btn btn-primary btn-xs" onclick="anim.faster()"><span class="glyphicon glyphicon-plus-sign"></span></i></button>
-                    </div>
-                    <br>
+                    <!-- Controls and sliders -->
                 </div>
             </div>
             <div class="col-sm-9" id="slider-container">
@@ -64,36 +31,40 @@
         const imageBasePath = 'SATELITE/'; // Path to images folder
 
         let imageFiles = []; // Array to hold image filenames
-        let currentIndex = 0;
 
         function fetchImageList() {
             fetch('image-list.json')
                 .then(response => response.json())
                 .then(data => {
                     imageFiles = data;
-                    slider.max = imageFiles.length - 1;
-                    updateImage(0);
+                    if (imageFiles.length > 0) {
+                        slider.max = imageFiles.length - 1;
+                        slider.value = 0; // Reset slider to the first image
+                        updateImage(0);
+                    } else {
+                        console.error('No images found in image-list.json');
+                    }
                 })
                 .catch(error => console.error('Error fetching image list:', error));
         }
 
         function updateImage(index) {
-            if (imageFiles[index]) {
+            if (index >= 0 && index < imageFiles.length) {
                 sliderImage.src = imageBasePath + imageFiles[index];
-                currentIndex = index;
+                console.log('Updated image to:', sliderImage.src);
+            } else {
+                console.error('Index out of bounds:', index);
             }
         }
 
         slider.addEventListener('input', () => {
-            updateImage(slider.value);
+            updateImage(parseInt(slider.value, 10));
         });
 
         // Fetch the image list on page load
         fetchImageList();
     </script>
-
 </body>
-
 </html>
 <!--
 http://stackoverflow.com/questions/2385203/can-you-control-gif-animation-with-javascript
