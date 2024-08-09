@@ -61,36 +61,34 @@
         /*  */
         var img_id = "anim_img";
         var slider_id = "anim_frame_slider";
-        var loop_select_id = "loop_select";
-        
-        var imageFolderPath = "/home/uepcb-0197/SATELITE/"; // Update with your image folder path
-        var imageExtensions = ".png"; // Update with your image extension if needed
+        var serverUrl = 'http://localhost:8000/SATELITE/'; // Update with your server URL
 
-        // List of images in the folder
-        var imageFiles = [
-            "SATELITE_09-08-2024_15_20.png",
-            "SATELITE_09-08-2024_15_30.png",
-            "SATELITE_09-08-2024_15_40.png"
-            // Add other image filenames here
-        ];
-
-        var frames = imageFiles.map(file => imageFolderPath + file);
         var imgElement = document.getElementById(img_id);
         var sliderElement = document.getElementById(slider_id);
 
-        sliderElement.max = frames.length - 1;
+        // Fetch the list of images from the server
+        fetch(serverUrl)
+            .then(response => response.json())
+            .then(imageFiles => {
+                var imageFolderPath = 'http://localhost:8000/SATELITE/'; // Update with your server URL if needed
 
-        function updateImage(index) {
-            imgElement.src = frames[index];
-        }
+                // Construct full URLs for images
+                var frames = imageFiles.map(file => imageFolderPath + file);
+                
+                sliderElement.max = frames.length - 1;
 
-        sliderElement.addEventListener('input', function () {
-            updateImage(this.value);
-        });
+                function updateImage(index) {
+                    imgElement.src = frames[index];
+                }
 
-        // Initialize with the first image
-        updateImage(0);
-	anim = new Animation(frames, imgElement, sliderElement, loop_select_id);
+                sliderElement.addEventListener('input', function () {
+                    updateImage(this.value);
+                });
+
+                // Initialize with the first image
+                updateImage(0);
+            })
+            .catch(error => console.error('Error fetching image list:', error));
     </script>
 
 </body>
