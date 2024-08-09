@@ -52,22 +52,22 @@
                 </div>
             </div>
             <div class="col-sm-9">
-                <img class="img-responsive" id="anim_img">
+                <img id="slider-image" src="SATELITE/image1.png" alt="Image Slider">
+                <input id="slider" type="range" min="0" max="0" value="0">
             </div>
         </div>
     </div>
 
-    <script language="javascript">
-        /*  */
+    <script>
         const sliderImage = document.getElementById('slider-image');
         const slider = document.getElementById('slider');
-        const imageBasePath = 'SATELITE/'; // Update with your actual path
+        const imageBasePath = 'SATELITE/'; // Path to images folder
 
-        let imageFiles = []; // Will hold image file names
+        let imageFiles = []; // Array to hold image filenames
         let currentIndex = 0;
 
         function fetchImageList() {
-            fetch('image-list.json') // This should be a static JSON file or endpoint listing your images
+            fetch('image-list.json')
                 .then(response => response.json())
                 .then(data => {
                     imageFiles = data;
