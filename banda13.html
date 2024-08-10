@@ -72,119 +72,140 @@
                 </div>
             </div>
             <div class="col-sm-9" id="slider-container">
-                <img id="slider-image" src="SATELITE/SATELITE_09-08-2024_11_50.png" alt="Image Slider">
+                <img id="slider-image" src="SATELITE/default-path.png" alt="Image Slider">
             </div>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-        const sliderImage = document.getElementById('slider-image');
-        const slider = document.getElementById('slider');
-        const imageBasePath = 'SATELITE/'; // Path to images folder
-        let imageFiles = []; // Array to hold image filenames
-        let currentIndex = 0; // Current index in the imageFiles array
-        let intervalId = null; // To store interval ID for autoplay
-        let intervalSpeed = 1000; // Default speed (1 second)
+	document.addEventListener('DOMContentLoaded', () => {
+	    const sliderImage = document.getElementById('slider-image');
+	    const slider = document.getElementById('slider');
+	    let imageFiles = []; // Array to hold image filenames
+	    let currentIndex = 0; // Current index in the imageFiles array
+	    let intervalId = null; // To store interval ID for autoplay
+	    let intervalSpeed = 1000; // Default speed (1 second)
 
-        function fetchImageList() {
-            fetch('image-list.json')
-                .then(response => response.json())
-                .then(data => {
-                    imageFiles = data;
-                    if (imageFiles.length > 0) {
-                        slider.max = imageFiles.length - 1;
-                        slider.value = 0; // Reset slider to the first image
-                        updateImage(0);
-                    } else {
-                        console.error('No images found in image-list.json');
-                    }
-                })
-                .catch(error => console.error('Error fetching image list:', error));
-        }
+	    // Function to format the date as XX-XX-XXXX
+	    function getFormattedDate() {
+		const now = new Date();
+		const year = now.getFullYear();
+		const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+		const day = String(now.getDate()).padStart(2, '0');
+		return `${day}-${month}-${year}`;
+	    }
 
-        function updateImage(index) {
-            if (index >= 0 && index < imageFiles.length) {
-                sliderImage.src = imageBasePath + imageFiles[index];
-                slider.value = index;
-                currentIndex = index;
-                console.log('Updated image to:', sliderImage.src);
-            } else {
-                console.error('Index out of bounds:', index);
+	    // Function to generate the base path using the current date
+	    function getImageBasePath() {
+		const dateStr = getFormattedDate();
+		return `SATELITE/${dateStr}`;
+	    }
+	    
+	    // Function to set the initial src of the image
+    	    function setInitialImageSrc() {
+            const imageBasePath = getImageBasePath(); // Get the updated path
+            sliderImage.src = `${imageBasePath}/SATELITE_${getFormattedDate()}_00_00.png`;
+            console.log('Initial image source set to:', sliderImage.src);
             }
-        }
 
-        function goToFirstFrame() {
-            updateImage(0);
-        }
+	    function fetchImageList() {
+		fetch('image-list.json')
+		    .then(response => response.json())
+		    .then(data => {
+		        imageFiles = data;
+		        if (imageFiles.length > 0) {
+		            slider.max = imageFiles.length - 1;
+		            slider.value = 0; // Reset slider to the first image
+		            updateImage(0);
+		        } else {
+		            console.error('No images found in image-list.json');
+		        }
+		    })
+		    .catch(error => console.error('Error fetching image list:', error));
+	    }
 
-        function goToPreviousFrame() {
-            if (currentIndex > 0) {
-                updateImage(currentIndex - 1);
-            }
-        }
+	    function updateImage(index) {
+		if (index >= 0 && index < imageFiles.length) {
+		    const imageBasePath = getImageBasePath(); // Get the updated path
+		    sliderImage.src = imageBasePath + '/' + imageFiles[index];
+		    slider.value = index;
+		    currentIndex = index;
+		    console.log('Updated image to:', sliderImage.src);
+		} else {
+		    console.error('Index out of bounds:', index);
+		}
+	    }
 
-        function goToNextFrame() {
-            if (currentIndex < imageFiles.length - 1) {
-                updateImage(currentIndex + 1);
-            }
-        }
+	    function goToFirstFrame() {
+		updateImage(0);
+	    }
 
-        function goToLastFrame() {
-            updateImage(imageFiles.length - 1);
-        }
+	    function goToPreviousFrame() {
+		if (currentIndex > 0) {
+		    updateImage(currentIndex - 1);
+		}
+	    }
 
-        function playAnimation() {
-            if (intervalId === null) {
-                intervalId = setInterval(() => {
-                    goToNextFrame();
-                }, intervalSpeed);
-            }
-        }
+	    function goToNextFrame() {
+		if (currentIndex < imageFiles.length - 1) {
+		    updateImage(currentIndex + 1);
+		}
+	    }
 
-        function pauseAnimation() {
-            clearInterval(intervalId);
-            intervalId = null;
-        }
+	    function goToLastFrame() {
+		updateImage(imageFiles.length - 1);
+	    }
 
-        function slower() {
-            if (intervalSpeed < 5000) { // Limit maximum speed
-                intervalSpeed += 500; // Increase interval speed (slower)
-                if (intervalId !== null) {
-                    playAnimation(); // Restart animation with new speed
-                }
-            }
-        }
+	    function playAnimation() {
+		if (intervalId === null) {
+		    intervalId = setInterval(() => {
+		        goToNextFrame();
+		    }, intervalSpeed);
+		}
+	    }
 
-        function faster() {
-            if (intervalSpeed > 500) { // Limit minimum speed
-                intervalSpeed -= 500; // Decrease interval speed (faster)
-                if (intervalId !== null) {
-                    playAnimation(); // Restart animation with new speed
-                }
-            }
-        }
+	    function pauseAnimation() {
+		clearInterval(intervalId);
+		intervalId = null;
+	    }
 
-        // Event listeners for buttons
-        document.getElementById('first-frame').addEventListener('click', goToFirstFrame);
-        document.getElementById('prev-frame').addEventListener('click', goToPreviousFrame);
-        document.getElementById('play').addEventListener('click', playAnimation);
-        document.getElementById('pause').addEventListener('click', pauseAnimation);
-        document.getElementById('next-frame').addEventListener('click', goToNextFrame);
-        document.getElementById('last-frame').addEventListener('click', goToLastFrame);
-        document.getElementById('slower').addEventListener('click', slower);
-        document.getElementById('faster').addEventListener('click', faster);
+	    function slower() {
+		if (intervalSpeed < 5000) { // Limit maximum speed
+		    intervalSpeed += 500; // Increase interval speed (slower)
+		    if (intervalId !== null) {
+		        playAnimation(); // Restart animation with new speed
+		    }
+		}
+	    }
 
-        // Event listener for slider
-        slider.addEventListener('input', () => {
-            updateImage(parseInt(slider.value, 10));
-        });
+	    function faster() {
+		if (intervalSpeed > 500) { // Limit minimum speed
+		    intervalSpeed -= 500; // Decrease interval speed (faster)
+		    if (intervalId !== null) {
+		        playAnimation(); // Restart animation with new speed
+		    }
+		}
+	    }
 
-        // Fetch the image list on page load
-        fetchImageList();
-    });
+	    // Event listeners for buttons
+	    document.getElementById('first-frame').addEventListener('click', goToFirstFrame);
+	    document.getElementById('prev-frame').addEventListener('click', goToPreviousFrame);
+	    document.getElementById('play').addEventListener('click', playAnimation);
+	    document.getElementById('pause').addEventListener('click', pauseAnimation);
+	    document.getElementById('next-frame').addEventListener('click', goToNextFrame);
+	    document.getElementById('last-frame').addEventListener('click', goToLastFrame);
+	    document.getElementById('slower').addEventListener('click', slower);
+	    document.getElementById('faster').addEventListener('click', faster);
 
-    </script>
+	    // Event listener for slider
+	    slider.addEventListener('input', () => {
+		updateImage(parseInt(slider.value, 10));
+	    });
+
+	    // Fetch the image list on page load
+	    fetchImageList();
+	});
+     </script>
 </body>
 </html>
 <!--
