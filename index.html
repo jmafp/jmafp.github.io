@@ -60,13 +60,18 @@
     <p>José Antonio Guzzi Ferez</p>
   </div>
   <script>
-    function sendHeight() {
-      const height = document.body.scrollHeight;
-      window.parent.postMessage(height, '*');
+    function resizeIframe(iframe) {
+      // Adjust iframe height based on content
+      iframe.style.height = iframe.contentWindow.document.body.scrollHeight + 'px';
     }
 
-    window.onload = sendHeight;
-    window.onresize = sendHeight; // Optional: to adjust height on window resize
+    // Event listener for iframe to resize on content change
+    window.addEventListener('message', function(event) {
+      if (event.origin === window.location.origin) {
+        const iframe = document.getElementById('search_iframe');
+        iframe.style.height = event.data + 'px';
+      }
+    });
   </script>
 
 </body>
