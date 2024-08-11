@@ -11,6 +11,13 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
   <link rel="stylesheet" href="css/main.css" />
+  <style>
+    iframe {
+      width: 100%;
+      border: none;
+      overflow: hidden;
+    }
+  </style>
 </head>
 <html>
 <body>
@@ -40,5 +47,19 @@
    <div class="jumbotron text-center">
     <p>José Antonio Guzzi Ferez</p>
   </div>
+  <script>
+    function resizeIframe(iframe) {
+      // Adjust iframe height based on content
+      iframe.style.height = iframe.contentWindow.document.body.scrollHeight + 'px';
+    }
+
+    // Event listener for iframe to resize on content change
+    window.addEventListener('message', function(event) {
+      if (event.origin === window.location.origin) {
+        const iframe = document.getElementById('search_iframe');
+        iframe.style.height = event.data + 'px';
+      }
+    });
+  </script>
 </body>
 </html>
