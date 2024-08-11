@@ -59,24 +59,6 @@
    <div class="jumbotron text-center">
     <p>José Antonio Guzzi Ferez</p>
   </div>
-  <script>
-    function resizeIframe(iframe) {
-      // Adjust iframe height based on content
-      iframe.style.height = iframe.contentWindow.document.body.scrollHeight + 'px';
-    }
 
-    // Event listener for iframe to resize on content change
-    window.addEventListener('message', function(event) {
-      if (event.origin === window.location.origin) {
-        const iframe = document.getElementById('search_iframe');
-        iframe.style.height = event.data + 'px';
-      }
-    });
-
-    // Adjust iframe height when it loads
-    document.getElementById('search_iframe').onload = function() {
-      resizeIframe(this);
-    };
-  </script>
 </body>
 </html>
