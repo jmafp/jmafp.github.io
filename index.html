@@ -59,6 +59,15 @@
    <div class="jumbotron text-center">
     <p>José Antonio Guzzi Ferez</p>
   </div>
+  <script>
+    function sendHeight() {
+      const height = document.body.scrollHeight;
+      window.parent.postMessage(height, '*');
+    }
+
+    window.onload = sendHeight;
+    window.onresize = sendHeight; // Optional: to adjust height on window resize
+  </script>
 
 </body>
 </html>
