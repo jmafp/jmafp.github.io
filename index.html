@@ -72,6 +72,11 @@
         iframe.style.height = event.data + 'px';
       }
     });
+
+    // Adjust iframe height when it loads
+    document.getElementById('search_iframe').onload = function() {
+      resizeIframe(this);
+    };
   </script>
 </body>
 </html>
