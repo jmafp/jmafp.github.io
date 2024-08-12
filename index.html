@@ -16,7 +16,7 @@
     .iframe-container {
       width: 100%;
       position: relative;
-      padding-top: 56.25%; /* 16:9 Aspect Ratio */
+      padding-top: 100%; /* 16:9 Aspect Ratio */
       overflow: hidden;
       background: #000;
     }
@@ -56,9 +56,11 @@
         <iframe class="embed-responsive-item" src="intro.html" onload="this.style.height=this.contentDocument.body.scrollHeight +'px';" width="100%" style="border:none;" frameborder="0" allowfullscreen name="search_iframe"></iframe>
       </div>
     </div>
-   <div class="jumbotron text-center">
-    <p>José Antonio Guzzi Ferez</p>
-  </div>
+   <footer class="text-center" style="background:#dddddd">
+    <br>
+    <p>¡Síguenos en nuestras redes sociales!</p>
+    <br>
+   </footer>
   <script>
     function resizeIframe(iframe) {
       // Adjust iframe height based on content
