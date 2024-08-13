@@ -11,6 +11,13 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
   <link rel="stylesheet" href="css/main.css" />
+  <style>
+    iframe {
+      width: 100%;
+      border: none;
+      overflow: auto; /* Ensure scrollbars appear */
+    }
+  </style>
 </head>
 <html>
 <body>
@@ -45,7 +52,7 @@
         <!--
                 <iframe class="embed-responsive-item" src="intro.html" height="3010px" width="100%" style="border:none;" frameborder="0" allowfullscreen name="search_iframe"></iframe>
                 -->
-        <iframe class="embed-responsive-item" src="intro.html" onload="this.style.height=this.contentDocument.body.scrollHeight +'px';" width="100%" style="border:none;" frameborder="0" allowfullscreen name="search_iframe"></iframe>
+        <iframe id="contentIframe" src="intro.html" onload="resizeIframe();" width="100%" style="border:none;" frameborder="0" allowfullscreen name="search_iframe"></iframe>
       </div>
     </div>
   <footer class="text-center" style="background:#dddddd">
@@ -53,5 +60,16 @@
     <p>PAGINA EN PROCESO DE ACTUALIZACION</p>
     <br>
   </footer>
+  <script>
+    function resizeIframe() {
+      var iframe = document.getElementById('contentIframe');
+      if (iframe && iframe.contentWindow && iframe.contentWindow.document.body) {
+        var height = iframe.contentWindow.document.body.scrollHeight;
+        console.log('Iframe height:', height); // Debugging line
+        iframe.style.height = height + 'px';
+      }
+    }
+  </script>
+
 </body>
 </html>
