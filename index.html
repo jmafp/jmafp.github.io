@@ -11,6 +11,13 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
   <link rel="stylesheet" href="css/main.css" />
+  <style>
+    iframe {
+      width: 100%;
+      border: none;
+      overflow: hidden; /* Hide scrollbars */
+    }
+  </style>
 </head>
 <html>
 <body>
@@ -53,5 +60,10 @@
     <p>PAGINA EN PROCESO DE ACTUALIZACION</p>
     <br>
   </footer>
+  <script>
+    function resizeIframe(iframe) {
+      iframe.style.height = iframe.contentWindow.document.body.scrollHeight + 'px';
+    }
+  </script>
 </body>
 </html>
